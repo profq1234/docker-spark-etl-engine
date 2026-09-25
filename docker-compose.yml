@@ -1,7 +1,7 @@
 services:
   # --- 1. STORAGE LAYER (MinIO) ---
   minio:
-    image: quay.io/minio/minio:latest
+    image: minio/minio:RELEASE.2024-03-30T09-41-56Z
     container_name: minio_storage
     ports:
       - "9000:9000"
