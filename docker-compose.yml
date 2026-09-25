@@ -1,7 +1,7 @@
 services:
   # --- 1. STORAGE LAYER (MinIO) ---
   minio:
-    image: bitnami/minio:2024
+    image: bitnami/minio:latest
     container_name: minio_storage
     ports:
       - "9000:9000"
