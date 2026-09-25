@@ -1,0 +1,37 @@
+# ========================
+# Python & Virtual Env
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env_folder/
+
+# ========================
+# Docker
+# ========================
+.docker/
+docker-compose.override.yml
+
+# ========================
+# Credentials & Secrets
+# ========================
+.env
+
+# ========================
+# Data Lake Zones (CRITICAL)
+# ========================
+bronze-zone/
+silver-zone/
+gold-zone/
+*.csv
+*.parquet
+*.json
+
+# ========================
+# OS Generated Files
+# ========================
+.DS_Store
+Thumbs.db

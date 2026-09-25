@@ -1,0 +1,46 @@
+services:
+  # --- 1. STORAGE LAYER (MinIO) ---
+  minio:
+    image: minio/minio
+    container_name: minio_storage
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - /home/profq/minio_data:/data
+    env_file:
+      - .env
+    command: server /data --console-address ":9001"
+    networks:
+      - bigdata-net
+
+  # --- 2. COMPUTE LAYER (Spark Master) ---
+  spark-master:
+    image: bde2020/spark-master:3.3.0-hadoop3.3
+    container_name: spark-master
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    volumes:
+      # We map a local folder where you will save your PySpark scripts
+      - /home/profq/spark_code:/opt/workspace 
+    networks:
+      - bigdata-net
+
+  # --- 3. COMPUTE LAYER (Spark Worker Template) ---
+  spark-worker:
+    image: bde2020/spark-worker:3.3.0-hadoop3.3
+    # Notice: No hardcoded container_name or exposed ports here!
+    depends_on:
+      - spark-master
+    environment:
+      - "SPARK_MASTER=spark://spark-master:7077"
+      - "SPARK_WORKER_CORES=1"
+      - "SPARK_WORKER_MEMORY=1g"
+    networks:
+      - bigdata-net
+
+# Define the shared network so all containers can talk to each other
+networks:
+  bigdata-net:
+    driver: bridge
