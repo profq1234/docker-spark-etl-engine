@@ -8,7 +8,7 @@ echo "🚀 Booting Algorithmic Trading Data Lake Pipeline"
 echo "=================================================="
 
 echo "[1/4] Starting Docker Infrastructure (MinIO & Spark)..."
-docker-compose up -d
+docker compose up -d
 
 # Give MinIO a few seconds to fully initialize before sending data to it
 echo "Waiting 10 seconds for MinIO to initialize..."
