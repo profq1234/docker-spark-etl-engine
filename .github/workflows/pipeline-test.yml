@@ -24,8 +24,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Configure Dummy Environment Variables
-      run: cp .env.example .env
+    - name: Configure Secure Environment Variables
+      run: |
+        echo "MINIO_ROOT_USER=${{ secrets.MINIO_ROOT_USER }}" > .env
+        echo "MINIO_ROOT_PASSWORD=${{ secrets.MINIO_ROOT_PASSWORD }}" >> .env
 
     - name: Execute Master Pipeline Script
       run: |
