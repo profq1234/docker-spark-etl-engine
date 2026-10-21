@@ -1,7 +1,7 @@
 services:
   # --- 1. STORAGE LAYER (MinIO) ---
   minio:
-    image: minio/minio
+    image: ghcr.io/profq1234/minio-local:latest
     container_name: minio_storage
     ports:
       - "9000:9000"
