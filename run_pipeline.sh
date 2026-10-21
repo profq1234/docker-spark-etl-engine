@@ -18,10 +18,10 @@ echo "[2/4] Executing Bronze Layer (API Extraction)..."
 python3 src/data_generator.py
 
 echo "[3/4] Executing Silver Layer (Spark ETL & Cleaning)..."
-python3 src/spark_etl_job.py
+docker compose exec spark-master /spark/bin/spark-submit --packages org.apache.hadoop:hadoop-aws:3.3.2,com.amazonaws:aws-java-sdk-bundle:1.11.1026 /opt/workspace/spark_etl_job.py
 
 echo "[4/4] Executing Gold Layer (Spark Aggregation)..."
-python3 src/gold_aggregation_job.py
+docker compose exec spark-master /spark/bin/spark-submit --packages org.apache.hadoop:hadoop-aws:3.3.2,com.amazonaws:aws-java-sdk-bundle:1.11.1026 /opt/workspace/gold_aggregation_job.py
 
 echo "=================================================="
 echo "✅ Pipeline Execution Complete!"
