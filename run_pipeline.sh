@@ -17,6 +17,9 @@ sleep 10
 echo "[2/4] Executing Bronze Layer (API Extraction)..."
 python3 src/data_generator.py
 
+echo "📦 Installing PySpark dependencies inside the container..."
+docker compose exec spark-master pip3 install python-dotenv
+
 echo "[3/4] Executing Silver Layer (Spark ETL & Cleaning)..."
 docker compose exec spark-master /spark/bin/spark-submit --packages org.apache.hadoop:hadoop-aws:3.3.2,com.amazonaws:aws-java-sdk-bundle:1.11.1026 /opt/workspace/spark_etl_job.py
 
