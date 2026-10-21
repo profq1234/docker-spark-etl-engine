@@ -35,3 +35,4 @@ gold-zone/
 # ========================
 .DS_Store
 Thumbs.db
+src/.env
