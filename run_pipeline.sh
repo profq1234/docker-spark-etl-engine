@@ -10,12 +10,27 @@ echo "=================================================="
 echo "[1/4] Starting Docker Infrastructure (MinIO & Spark)..."
 docker compose up -d
 
-# Give MinIO a few seconds to fully initialize before sending data to it
+# Give MinIO a few seconds to fully initialize
 echo "Waiting 10 seconds for MinIO to initialize..."
 sleep 10
 
 echo "[2/4] Executing Bronze Layer (API Extraction)..."
 python3 src/data_generator.py
+
+echo "🪣 Initializing Silver and Gold Zones in MinIO..."
+pip install boto3 python-dotenv > /dev/null
+python3 -c "
+import os, boto3
+from dotenv import load_dotenv
+load_dotenv('.env')
+s3 = boto3.client('s3', endpoint_url='http://localhost:9000', aws_access_key_id=os.getenv('MINIO_ROOT_USER'), aws_secret_access_key=os.getenv('MINIO_ROOT_PASSWORD'))
+for bucket in ['silver-zone', 'gold-zone']:
+    try:
+        s3.create_bucket(Bucket=bucket)
+        print(f'✅ Created bucket: {bucket}')
+    except Exception as e:
+        print(f'⚠️ {bucket} already exists or error: {e}')
+"
 
 echo "📦 Installing PySpark dependencies inside the container..."
 docker compose exec spark-master pip3 install python-dotenv
